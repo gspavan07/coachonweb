@@ -3,6 +3,9 @@ module.exports = {
   content: ["./src/**/*.{html,js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        mono: "monospace", // ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      },
       colors: {
         primary: "#5340ff", // Example primary color
         secondary: "#7E76FF", // Example primary color

@@ -3,6 +3,7 @@ import { CiMenuBurger } from "react-icons/ci";
 import { IoMdClose } from "react-icons/io";
 import { Link } from "react-router-dom";
 import logo from "../logo.svg";
+
 const Navbar = () => {
   const [MenuToggle, setMenuToggle] = useState(false);
   return (
@@ -111,7 +112,7 @@ const Navbar = () => {
 
           {/* Login / Signup */}
           <Link
-            to="/"
+            to="/login"
             className="text-white text-sm flex bg-primary hover:bg-secondary px-6 py-3 rounded-lg items-center"
           >
             <span className="font-medium">Login/Signup</span>

@@ -5,11 +5,16 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import logo from "../logo.svg";
 import { RotatingLines } from "react-loader-spinner";
+import { useUser } from "../contexts/UserContext";
+import CreateUserWindow from "../components/CreateUserWindow";
 const Signup = () => {
+  const { user } = useUser();
+  const [userDetails, setUserDetails] = useState();
   const [errorText, setErrorText] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [createUser, setCreateUser] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
@@ -17,7 +22,7 @@ const Signup = () => {
     password: "",
   });
   useEffect(() => {
-    localStorage.getItem("accessToken") && navigate("/");
+    user && navigate("/");
   });
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -46,9 +51,11 @@ const Signup = () => {
         body: JSON.stringify(formData),
       });
       const result = await res.json();
+      console.log(result);
       if (res.status === 200) {
         // Redirect to the home page
-        navigate("/login");
+        setUserDetails(result.user);
+        setCreateUser(true);
         setLoading(false);
       } else {
         setErrorText(result.error);
@@ -62,6 +69,8 @@ const Signup = () => {
   return (
     <div>
       <Navbar />
+      {createUser && <CreateUserWindow user={userDetails} />}
+
       <div className="flex min-h-full flex-1 flex-col my-20 justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img alt="CoachOn" src={logo} className="mx-auto h-10 w-auto" />

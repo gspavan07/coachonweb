@@ -5,7 +5,9 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import logo from "../logo.svg";
 import { RotatingLines } from "react-loader-spinner";
+import { useUser } from "../contexts/UserContext";
 const Login = () => {
+  const { user, login } = useUser();
   const [errorText, setErrorText] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -16,7 +18,7 @@ const Login = () => {
   });
 
   useEffect(() => {
-    localStorage.getItem("accessToken") && navigate("/");
+    user && navigate("/");
   });
 
   const handleChange = (e) => {
@@ -42,9 +44,8 @@ const Login = () => {
         body: JSON.stringify(formData),
       });
       const result = await res.json();
-      console.log(result);
       if (res.status === 200) {
-        localStorage.setItem("accessToken", result.accessToken);
+        login(result.user);
         // Redirect to the home page
         navigate("/");
         setLoading(false);

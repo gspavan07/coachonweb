@@ -9,8 +9,33 @@ const userSchema = new mongoose.Schema({
   },
   gender: {
     type: String,
-    default: "",
-    enum: ["Male", "Female"], // Restrict to these two options
+    enum: ["Male", "Female", "Other"], // Restrict to these two options
+  },
+  avatar: {
+    url: {
+      type: String,
+      default: "", // Default can be an empty string or a placeholder image URL
+      match: [
+        /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg|webp))$/,
+        "Please enter a valid image URL.",
+      ], // Regex to validate URL for images
+    },
+    uploadedAt: {
+      type: Date,
+      default: Date.now, // Automatically set the date of upload
+    },
+  },
+  education: {
+    type: String,
+    enum: [
+      "9th",
+      "10th",
+      "12th",
+      "1st Year",
+      "2nd Year",
+      "3rd Year",
+      "4th Year",
+    ], // Valid education levels
   },
   email: {
     address: {
@@ -42,18 +67,6 @@ const userSchema = new mongoose.Schema({
       type: Boolean,
       default: false,
     },
-  },
-  education: {
-    type: String,
-    enum: [
-      "9th",
-      "10th",
-      "12th",
-      "1st Year",
-      "2nd Year",
-      "3rd Year",
-      "4th Year",
-    ], // Valid education levels
   },
   password: {
     type: String,

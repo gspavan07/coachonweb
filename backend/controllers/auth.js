@@ -33,7 +33,14 @@ export const signup = async (req, res) => {
     // Send verification email
     await newUser.save();
 
-    return res.json({ success: true }).status(200);
+    // Convert Mongoose document to plain JavaScript object
+    const userDetails = newUser.toObject();
+    delete userDetails.password; // Remove the password field
+    const token = jwt.sign(userDetails.email.address, "ilovecars");
+
+    return res
+      .json({ success: true, user: userDetails, token: token })
+      .status(200);
   } catch (err) {
     if (err.name === "ValidationError") {
       // Loop through the `errors` object
@@ -69,9 +76,46 @@ export const login = async (req, res) => {
 
     const token = jwt.sign(data, "ilovecars");
 
-    return res.json({ success: true, data: user, token: token }).status(200);
+    // Convert Mongoose document to plain JavaScript object
+    const userDetails = user.toObject();
+    delete userDetails.password; // Remove the password field
+
+    return res
+      .json({ success: true, user: userDetails, token: token })
+      .status(200);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Server error" });
+  }
+};
+
+export const createUser = async (req, res) => {
+  try {
+    const { userId, gender, education } = req.body; // Get the user ID from the request
+
+    if (!req.file || !req.file.location) {
+      return res.status(400).json({ error: "Profile picture is required" });
+    }
+    // S3 Image URL
+    const profilePicUrl = req.file.location;
+
+    // Update the user's profilePic field in the database
+    const user = await User.findByIdAndUpdate(
+      userId,
+      {
+        "avatar.url": profilePicUrl,
+        gender: gender,
+        education: education,
+      },
+      { new: true }
+    );
+
+    // Convert Mongoose document to plain JavaScript object
+    const userDetails = user.toObject();
+    delete userDetails.password;
+    return res.status(200).json({ success: true, user: userDetails });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Failed to upload profile picture" });
   }
 };

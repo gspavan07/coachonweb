@@ -3,9 +3,16 @@ import { CiMenuBurger } from "react-icons/ci";
 import { IoMdClose } from "react-icons/io";
 import { Link } from "react-router-dom";
 import logo from "../logo.svg";
+import { useUser } from "../contexts/UserContext";
 
 const Navbar = () => {
+  const { user, logout } = useUser();
   const [MenuToggle, setMenuToggle] = useState(false);
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    logout();
+  };
   return (
     <nav className="bg-white border-b border-gray-200 shadow-sm">
       <div className="px-4 md:mx-8 lg:mx-14 py-3 flex items-center justify-between">
@@ -111,12 +118,27 @@ const Navbar = () => {
           </Link>
 
           {/* Login / Signup */}
-          <Link
-            to="/login"
-            className="text-white text-sm flex bg-primary hover:bg-secondary px-6 py-3 rounded-lg items-center"
-          >
-            <span className="font-medium">Login/Signup</span>
-          </Link>
+          {user ? (
+            //make a user profile
+            <div className="flex items-center">
+              <span className="text-gray-600 hover:text-black text-base font-medium">
+                {user.name}
+              </span>
+              <img
+                src={user.avatar.url}
+                alt="profilePic"
+                className="rounded-full h-10 w-10 ml-2 object-cover"
+                onClick={handleLogout}
+              />
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              className="text-white text-sm flex bg-primary hover:bg-secondary px-6 py-3 rounded-lg items-center"
+            >
+              <span className="font-medium">Login/Signup</span>
+            </Link>
+          )}
         </div>
       </div>
     </nav>

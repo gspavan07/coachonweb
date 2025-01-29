@@ -4,9 +4,6 @@ import multer from "multer";
 import path from "path";
 import multerS3 from "multer-s3";
 import s3 from "../lib/s3.js";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 const router = express.Router();
 

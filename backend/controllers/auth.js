@@ -1,7 +1,7 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-
+import { uploadFileToS3 } from "../lib/s3.js";
 // Signup route
 export const signup = async (req, res) => {
   const { name, email, mobile, password } = await req.body;
@@ -93,11 +93,21 @@ export const createUser = async (req, res) => {
   try {
     const { userId, gender, education } = req.body; // Get the user ID from the request
 
-    if (!req.file || !req.file.location) {
+    if (!req.file) {
       return res.status(400).json({ error: "Profile picture is required" });
     }
+    const fileName = `${userId}-${Date.now()}.${
+      req.file.mimetype.split("/")[1]
+    }`;
+    const fileUrl = await uploadFileToS3(
+      req.file.buffer,
+      fileName,
+      req.file.mimetype
+    );
+    const profilePicUrl = fileUrl;
+
     // S3 Image URL
-    const profilePicUrl = req.file.location;
+    // const profilePicUrl = req.file.location;
 
     // Update the user's profilePic field in the database
     const user = await User.findByIdAndUpdate(

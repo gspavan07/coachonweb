@@ -37,7 +37,7 @@ const CreateUserWindow = (props) => {
     formData.append("profilePic", profilePic); // Append the actual file
 
     try {
-      const response = await fetch("http://localhost:3000/api/createuser", {
+      const response = await fetch("/api/createuser", {
         method: "POST",
         body: formData,
       });
@@ -60,7 +60,7 @@ const CreateUserWindow = (props) => {
   };
 
   return (
-    <div className="fixed inset-0 z-10 flex items-center justify-center bg-gray-900 bg-opacity-50">
+    <div className="scale-in-center fixed inset-0 z-10 flex items-center justify-center bg-transparent">
       <div className="flex flex-col bg-white rounded-lg items-center shadow-lg p-6 w-full h-fit max-w-md">
         <h2 className="text-lg font-bold mb-6">Complete Your Profile</h2>
         {/* Profile Picture Upload */}

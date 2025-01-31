@@ -131,7 +131,7 @@ const Navbar = () => {
           {/* Login / Signup */}
           {user ? (
             //make a user profile
-            <div className="flex items-center">
+            <Link to="/profile" className="flex items-center">
               <span className="text-gray-600 hover:text-black text-base font-medium">
                 {user.name}
               </span>
@@ -139,9 +139,8 @@ const Navbar = () => {
                 src={user.avatar.url}
                 alt="profilePic"
                 className="rounded-full h-10 w-10 ml-2 object-cover"
-                onClick={handleLogout}
               />
-            </div>
+            </Link>
           ) : (
             <Link
               to="/login"

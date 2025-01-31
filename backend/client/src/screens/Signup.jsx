@@ -43,7 +43,7 @@ const Signup = () => {
       return;
     }
     try {
-      const res = await fetch("http://localhost:3000/api/signup", {
+      const res = await fetch("/api/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +69,12 @@ const Signup = () => {
   return (
     <div>
       <Navbar />
-      {createUser && <CreateUserWindow user={userDetails} />}
+      {createUser && (
+        <>
+          <div className="w-full h-screen flex absolute bg-gray-800 bg-opacity-40"></div>
+          <CreateUserWindow user={userDetails} />
+        </>
+      )}
 
       <div className="flex min-h-full flex-1 flex-col my-20 justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">

@@ -25,5 +25,5 @@ CoachOn is a web application designed to help students find the best coach or in
 
 ---
 ### Contact
-For any queries or collaboration, reach out at [your-email@example.com]
+For any queries or collaboration, reach out at gollapalli.shanmukpavan@gmail.com
 
